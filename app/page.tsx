@@ -2,6 +2,6 @@
 
 export default function Home() {
   return (
-    <div className="text-pink-400 text-4xl">Hello Airbnb</div>
+    <div className="text-pink-400 text-4xl"></div>
   )
 }
