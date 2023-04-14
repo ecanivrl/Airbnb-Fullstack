@@ -7,3 +7,11 @@ body,
 :root{
   @apply h-screen
 }
+
+
+.no-vertical-scrollbar {
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+  scrollbar-width: 0; /* Firefox */
+}
