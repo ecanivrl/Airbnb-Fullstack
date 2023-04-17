@@ -33,7 +33,7 @@ const UserMenu = () => {
           </div>
         </div>
       </div>
-      {isOpen && (
+      {isOpen && !registerModal.isOpen ?(
         <div className="absolute rounded-xl shadow-lg w-[40vw] md:w-3/4 overflow-hidden right-0 top-14 text-sm">
           <div className="flex flex-col cursor-pointer">
             <>
@@ -42,7 +42,7 @@ const UserMenu = () => {
             </>
           </div>
         </div>
-      )}
+      ): "" }
     </div>
   );
 };
