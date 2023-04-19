@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt"
 import NextAuth, { AuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
@@ -21,8 +21,8 @@ export const authOptions: AuthOptions = {
     CredentialsProvider({
       name: 'credentials',
       credentials: {
-        email: { label: 'email', type: 'text', placeholder: "ecani@..."},
-        password: { label: 'password', type: 'password', placeholder: "ecani***" }
+        email: { label: 'email', type: 'text' },
+        password: { label: 'password', type: 'password' }
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {

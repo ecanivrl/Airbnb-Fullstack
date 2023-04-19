@@ -7,7 +7,7 @@ interface MenuItemProps {
     label: string;
 }
 
-const Menuitem: React.FC<MenuItemProps> = ({onClick, label}) => {
+const MenuItem: React.FC<MenuItemProps> = ({onClick, label}) => {
   return (
     <div 
     onClick={onClick}
@@ -18,4 +18,4 @@ const Menuitem: React.FC<MenuItemProps> = ({onClick, label}) => {
 
 }
 
-export default Menuitem
+export default MenuItem
