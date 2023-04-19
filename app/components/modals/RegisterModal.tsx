@@ -12,9 +12,12 @@ import Input from '../inputs/Input';
 import { toast } from 'react-hot-toast';
 import Button from '../Button';
 import { signIn } from 'next-auth/react';
+import useLoginModal from '@/app/hooks/useLoginModal';
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -55,9 +58,13 @@ const RegisterModal = () => {
     toast.success('Registration successful with google');
   };
 
+  const toggle = useCallback(() => {
+    registerModal.onClose();
+    loginModal.onOpen();
+  }, [loginModal, registerModal]);
 
   const bodyContent = (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-2">
       <Heading
         title="Welcome to Airbnb!"
         subTitle="Create an Account!"
@@ -91,7 +98,7 @@ const RegisterModal = () => {
   );
 
   const footerContent = (
-    <div className="flex flex-col gap-4 mt-3 ">
+    <div className="flex flex-col gap-2">
       <hr />
       <Button
         outline
@@ -108,7 +115,7 @@ const RegisterModal = () => {
       <div className="justify-center items-center flex flex-row gap-2">
           <div>Already have an account?</div>
           <div
-          onClick={registerModal.onClose}
+          onClick={toggle}
           className="text-neutral-800 cursor-pointer hover:text-rose-500">Log in</div>
       </div>
     </div>

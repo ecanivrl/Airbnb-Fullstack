@@ -2,7 +2,6 @@
 
 import {signIn} from "next-auth/react"
 import React, { useCallback, useState, useEffect } from 'react';
-import axios from 'axios';
 import { AiFillGithub } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
@@ -19,8 +18,10 @@ import { useRouter } from "next/navigation";
 
 const LoginModal = () => {
   const router = useRouter();
+
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -65,6 +66,12 @@ const LoginModal = () => {
     toast.success("Logged in with Google");
   }
 
+  const toggle = useCallback(() => {
+    loginModal.onClose();
+    registerModal.onOpen();
+  }, [loginModal, registerModal]);
+
+
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading
@@ -107,10 +114,12 @@ const LoginModal = () => {
         onClick={() => logInWithGithub()}
       />
       <div className="justify-center items-center flex flex-row gap-2">
-          <div>Already have an account?</div>
+          <div>First time using Airbnb?</div>
           <div
-          onClick={registerModal.onClose}
-          className="text-neutral-800 cursor-pointer hover:text-rose-500">Log in</div>
+          onClick={toggle}
+          className="text-neutral-800 cursor-pointer hover:text-rose-500">
+            Create an account
+          </div>
       </div>
     </div>
   );

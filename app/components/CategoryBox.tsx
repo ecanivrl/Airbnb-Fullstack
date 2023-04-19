@@ -1,67 +1,74 @@
 'use-client';
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useCallback } from 'react'
-import { IconType } from 'react-icons'
-import qs from "query-string"
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useCallback } from 'react';
+import { IconType } from 'react-icons';
+import qs from 'query-string';
 
 interface CategoryBoxProps {
-    label: string,
-    icon: IconType,
-    selected?: boolean,
+  label: string;
+  icon: IconType;
+  selected?: boolean;
 }
 
 const CategoryBox: React.FC<CategoryBoxProps> = ({
-    label,
-    icon: Icon,
-    selected,
-
+  label,
+  icon: Icon,
+  selected,
 }) => {
+  const router = useRouter();
+  const params = useSearchParams();
 
-    const router = useRouter()
-    const params = useSearchParams()
+  const handleClick = useCallback(() => {
+    let currentQuery = {};
 
-    const handleClick = useCallback(() => {
-        let currentQuery = {};
+    if (params) {
+      currentQuery = qs.parse(params.toString());
+    }
 
-        if(params){
-            currentQuery = qs.parse(params.toString())
-        }
+    const updatedQuery: any = {
+      ...currentQuery,
+      category: label,
+    };
 
-        const updatedQuery: any = {
-            ...currentQuery,
-            category: label
-        }
+    if (params?.get('category') === label) {
+      delete updatedQuery.category;
+    }
 
-        if(params?.get('category') === label){
-            delete updatedQuery.category
-        }
+    const url = qs.stringifyUrl(
+      {
+        url: '/',
+        query: updatedQuery,
+      },
+      { skipNull: true }
+    );
 
-        const url = qs.stringifyUrl({
-            url: '/',
-            query: updatedQuery
-        },{skipNull: true,})
-
-        router.push(url)
-
-    },[label, params, router])
-
-
-    
+    router.push(url);
+  }, [label, params, router]);
 
   return (
     <div
-    onClick={handleClick}
-    className={`
-    flex flex-col justify-center items-center gap-2 border-b-2 hover:text-neutral-800
-    transition cursor-pointer
-    ${selected ? 'border-b-neutral-800' : 'border-transparent'}
-    ${selected ? 'text-neutral-800' : 'text-neutral-500'}
-    `}>
-        <Icon size={25}/>
-        <div className='font-medium text-sm'>{label}</div>
+      onClick={handleClick}
+      className={`
+            flex 
+            flex-col 
+            items-center 
+            justify-center 
+            gap-2
+            p-3
+            border-b-2
+            hover:text-neutral-800
+            hover:border-b-neutral-200
+            transition
+            cursor-pointer
+            ${selected ? 'border-b-neutral-800' : 'border-transparent'}
+            ${selected ? 'text-neutral-800' : 'text-neutral-500'}
+          `}
+    >
+      <Icon size={26} className='hover:scale-110'/>
+      <div className="font-medium text-sm">{label}</div>
     </div>
-  )
-}
+  );
+};
 
-export default CategoryBox
+export default CategoryBox;
