@@ -55,6 +55,16 @@ const LoginModal = () => {
    })
   };
 
+  const logInWithGithub = () => {
+    signIn('github')
+    toast.success("Logged in with Github");
+  }
+
+  const logInWithGoogle = () => {
+    signIn('google')
+    toast.success("Logged in with Google");
+  }
+
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading
@@ -88,13 +98,13 @@ const LoginModal = () => {
         outline
         label={'Continue with Google'}
         icon={FcGoogle}
-        onClick={() => {}}
+        onClick={() => logInWithGoogle()}
       />
       <Button
         outline
         label={'Continue with Github'}
         icon={AiFillGithub}
-        onClick={() => {}}
+        onClick={() => logInWithGithub()}
       />
       <div className="justify-center items-center flex flex-row gap-2">
           <div>Already have an account?</div>

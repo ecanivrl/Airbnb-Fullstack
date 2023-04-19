@@ -11,6 +11,7 @@ import Heading from '../Heading';
 import Input from '../inputs/Input';
 import { toast } from 'react-hot-toast';
 import Button from '../Button';
+import { signIn } from 'next-auth/react';
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
@@ -43,6 +44,17 @@ const RegisterModal = () => {
         setIsLoading(false);
       });
   };
+
+  const signInWithGithub = () => {
+    signIn('github');
+    toast.success('Registration successful with github');
+  };
+
+  const signInWithGoogle = () => {
+    signIn('google');
+    toast.success('Registration successful with google');
+  };
+
 
   const bodyContent = (
     <div className="flex flex-col gap-4">
@@ -85,13 +97,13 @@ const RegisterModal = () => {
         outline
         label={'Continue with Google'}
         icon={FcGoogle}
-        onClick={() => {}}
+        onClick={() => signInWithGoogle()}
       />
       <Button
         outline
         label={'Continue with Github'}
         icon={AiFillGithub}
-        onClick={() => {}}
+        onClick={() => signInWithGithub()}
       />
       <div className="justify-center items-center flex flex-row gap-2">
           <div>Already have an account?</div>
