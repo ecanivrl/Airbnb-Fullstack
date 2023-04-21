@@ -58,12 +58,16 @@ const LoginModal = () => {
 
   const logInWithGithub = () => {
     signIn('github')
-    toast.success("Logged in with Github");
+    setTimeout(() => {
+      toast.success("Logging in with github");
+    },1400)
   }
 
   const logInWithGoogle = () => {
     signIn('google')
-    toast.success("Logged in with Google");
+    setTimeout(() => {
+      toast.success("Logging in with Google");
+    },1400)
   }
 
   const toggle = useCallback(() => {

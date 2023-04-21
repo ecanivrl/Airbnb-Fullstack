@@ -2,13 +2,15 @@
 
 import { AiOutlineMenu } from 'react-icons/ai';
 import Avatar from '../Avatar';
-import { useState, useCallback } from 'react';
-import useRegisterModal from '@/app/hooks/useRegisterModal';
-import useLoginModal from '@/app/hooks/useLoginModal';
+import { useState, useCallback, useEffect, useRef } from 'react';
+import MenuItem from './MenuItem';
 import { signOut } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
+
+import useRegisterModal from '@/app/hooks/useRegisterModal';
+import useLoginModal from '@/app/hooks/useLoginModal';
+import useRentModal from '@/app/hooks/useRentModal';
 import { SafeUser } from '@/app/types';
-import MenuItem from './MenuItem';
 
 interface UserMenuProps {
   currentUser?: SafeUser | null;
@@ -19,11 +21,31 @@ const UserMenu: React.FC<UserMenuProps> = ({
 }) => {
   const registerModal = useRegisterModal()
   const loginModal = useLoginModal();
+  const rentModal = useRentModal()
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
+
+ 
+
+  let menuRef = useRef<HTMLDivElement>(null);
+ 
+   useEffect(() => {
+    let handler = (e: Event) => {
+      if(!menuRef.current?.contains(e.target as Node)){
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handler);
+
+    return () => {
+      document.removeEventListener('mousedown', handler);
+    };
+
+   });
 
   const logout = () => {
      signOut();
@@ -33,15 +55,16 @@ const UserMenu: React.FC<UserMenuProps> = ({
 
   const onRent = useCallback(() => {
     if (!currentUser) {
-
     return  loginModal.onOpen();
     }
 
-    // Open rent modal
-  }, [currentUser, loginModal]);
+    rentModal.onOpen();
+  }, [currentUser, loginModal, rentModal]);
 
   return (
-    <div className="relative">
+    <div 
+    ref={menuRef}
+    className="relative">
       <div className="flex flex-row items-center gap-3">
         <div
           onClick={onRent}
@@ -61,7 +84,8 @@ const UserMenu: React.FC<UserMenuProps> = ({
         </div>
       </div>
       {isOpen && (
-        <div className="absolute rounded-xl shadow-lg w-[40vw] md:w-3/4 overflow-hidden right-0 top-14 text-sm">
+        <div 
+        className="absolute rounded-xl shadow-lg w-[40vw] md:w-3/4 overflow-hidden right-0 top-14 text-sm">
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
                <>
@@ -69,7 +93,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                  <MenuItem onClick={() => {}} label="My Favorites" />
                  <MenuItem onClick={() => {}} label="My Reservations" />
                  <MenuItem onClick={() => {}} label="My Properties" />
-                 <MenuItem onClick={() => {}} label="Airbnb my home" />
+                 <MenuItem onClick={rentModal.onOpen} label="Airbnb my home" />
                  <MenuItem onClick={() => {}} label="My Favorites" />
                  <hr/>
                  <MenuItem onClick={() => logout()} label="Logout" />
